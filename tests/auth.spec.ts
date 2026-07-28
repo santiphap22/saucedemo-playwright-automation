@@ -26,4 +26,16 @@ test.describe('Authentication Module', () => {
     await expect(errorMessage).toContainText('Epic sadface: Sorry, this user has been locked out.');
   });
 
+  test('TC03 - Invalid Credentials Handling', async ({ page }) => {
+    await page.goto('https://www.saucedemo.com');
+
+    await page.locator('[data-test="username"]').fill('standard_user');
+    await page.locator('[data-test="password"]').fill('invalid_password');
+    await page.locator('[data-test="login-button"]').click();
+
+    const errorMessage = page.locator('[data-test="error"]');
+    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toContainText('Epic sadface: Username and password do not match any user in this service');
+  });
+
 });
