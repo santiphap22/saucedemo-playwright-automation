@@ -16,4 +16,12 @@ test.describe('Cart & Checkout Module', () => {
     await expect(cartBadge).toHaveText('1');
   });
 
+  test('TC07 - Item Removal & Cart State Update', async ({ page }) => {
+    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+    await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
+    
+    const cartBadge = page.locator('[data-test="shopping-cart-badge"]');
+    await expect(cartBadge).not.toBeVisible();
+  });
+
 });  
