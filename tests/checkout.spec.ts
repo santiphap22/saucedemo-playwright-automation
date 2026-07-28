@@ -19,9 +19,26 @@ test.describe('Cart & Checkout Module', () => {
   test('TC07 - Item Removal & Cart State Update', async ({ page }) => {
     await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
     await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
-    
+
     const cartBadge = page.locator('[data-test="shopping-cart-badge"]');
     await expect(cartBadge).not.toBeVisible();
+  });
+
+  test('TC08 - Complete End-to-End Order Processing Flow', async ({ page }) => {
+    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+    await page.locator('[data-test="shopping-cart-link"]').click();
+
+    await page.locator('[data-test="checkout"]').click();
+
+    await page.locator('[data-test="firstName"]').fill('John');
+    await page.locator('[data-test="lastName"]').fill('Doe');
+    await page.locator('[data-test="postalCode"]').fill('10240');
+    await page.locator('[data-test="continue"]').click();
+
+    await page.locator('[data-test="finish"]').click();
+
+    const completeHeader = page.locator('[data-test="complete-header"]');
+    await expect(completeHeader).toHaveText('Thank you for your order!');
   });
 
 });  
