@@ -14,4 +14,14 @@ test.describe('Product Catalog Module', () => {
     await expect(inventoryItems).toHaveCount(6);
   });
 
+  test('TC05 - Product Sorting (Price: Low to High)', async ({ page }) => {
+    await page.locator('[data-test="product-sort-container"]').selectOption('lohi');
+
+    const priceElements = await page.locator('[data-test="inventory-item-price"]').allTextContents();
+    const prices = priceElements.map(price => parseFloat(price.replace('$', '')));
+
+    const sortedPrices = [...prices].sort((a, b) => a - b);
+    expect(prices).toEqual(sortedPrices);
+  });
+
 });
